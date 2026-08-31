@@ -50,12 +50,11 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    /* Enlarged Store Name */
     .brand-title {
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 2.2rem; /* Significantly bigger */
+      font-size: 2.2rem;
       font-weight: 800;
       color: #ffffff;
       text-decoration: none;
@@ -115,23 +114,24 @@
       border: 2px solid var(--primary-brown);
     }
 
-    /* Navigation Bar */
+    /* Navigation Bar (Fixed Dropdown Clipping Issue) */
     nav {
       background-color: var(--secondary-brown);
       padding: 10px 5%;
       display: flex;
       align-items: center;
       gap: 12px;
-      overflow-x: auto;
-      white-space: nowrap;
       border-bottom: 2px solid var(--accent-gold);
+      position: relative;
+      z-index: 999;
+      flex-wrap: wrap;
     }
 
     .nav-btn {
       background-color: transparent;
       color: #e8d0be;
       border: 1px solid rgba(230, 161, 92, 0.3);
-      padding: 9px 20px;
+      padding: 9px 18px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
@@ -141,6 +141,7 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      white-space: nowrap;
     }
 
     .nav-btn:hover, .nav-btn.active {
@@ -160,9 +161,9 @@
       position: absolute;
       background-color: var(--primary-brown);
       min-width: 200px;
-      box-shadow: 0px 10px 20px rgba(0,0,0,0.35);
+      box-shadow: 0px 10px 20px rgba(0,0,0,0.4);
       border-radius: 8px;
-      z-index: 1001;
+      z-index: 1005;
       top: 100%;
       left: 0;
       overflow: hidden;
@@ -191,6 +192,59 @@
       display: block;
     }
 
+    /* Search Box in Navbar */
+    .nav-search-box {
+      position: relative;
+      margin-left: auto;
+      flex: 1;
+      max-width: 380px;
+      min-width: 220px;
+    }
+
+    .nav-search-box input {
+      width: 100%;
+      padding: 9px 40px 9px 38px;
+      border: 1px solid rgba(230, 161, 92, 0.4);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      outline: none;
+      background-color: #ffffff;
+      color: var(--text-main);
+      transition: all 0.25s ease;
+    }
+
+    .nav-search-box input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 10px rgba(230, 161, 92, 0.4);
+    }
+
+    .nav-search-box i.search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--button-brown);
+      font-size: 0.9rem;
+    }
+
+    .nav-search-box .clear-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: none;
+      background: #eee;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    .nav-search-box .clear-btn:hover {
+      background: #ddd;
+    }
+
     /* Main Container */
     .container {
       max-width: 1250px;
@@ -198,55 +252,38 @@
       padding: 25px 20px;
     }
 
-    /* Search Container */
-    .search-box {
-      margin: 10px 0 35px 0;
-      position: relative;
+    /* Latest Arrivals Header */
+    .latest-arrivals-banner {
+      background: linear-gradient(90deg, var(--primary-brown) 0%, var(--button-brown) 100%);
+      color: #ffffff;
+      padding: 22px 30px;
+      border-radius: 14px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 15px rgba(74, 32, 11, 0.15);
+      border-left: 6px solid var(--accent-gold);
     }
 
-    .search-box input {
-      width: 100%;
-      padding: 15px 50px 15px 50px;
-      border: 2px solid var(--border-color);
-      border-radius: 30px;
-      font-size: 1rem;
-      outline: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      background-color: #ffffff;
-      transition: all 0.3s ease;
+    .latest-arrivals-title h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
     }
 
-    .search-box input:focus {
-      border-color: var(--accent-gold);
-      box-shadow: 0 4px 18px rgba(230, 161, 92, 0.25);
+    .latest-arrivals-title h2 i {
+      color: var(--accent-gold);
     }
 
-    .search-box i.search-icon {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--button-brown);
-      font-size: 1.1rem;
-    }
-
-    .search-box .clear-btn {
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-      cursor: pointer;
-      font-size: 0.85rem;
-      display: none;
-      background: #eee;
-      padding: 4px 10px;
-      border-radius: 12px;
-      transition: background 0.2s;
-    }
-
-    .search-box .clear-btn:hover {
-      background: #ddd;
+    .latest-arrivals-title p {
+      font-size: 0.95rem;
+      color: #e8d0be;
+      margin-top: 4px;
     }
 
     /* Section Headers */
@@ -301,7 +338,6 @@
       gap: 24px;
     }
 
-    /* Tab Switching Fade-In Animation */
     .tab-animated {
       animation: fadeInUp 0.4s ease-out forwards;
     }
@@ -553,6 +589,11 @@
       .brand-title i {
         font-size: 1.8rem;
       }
+      .nav-search-box {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -566,7 +607,6 @@
     </a>
 
     <div class="header-actions">
-      <!-- Favourites relocated exclusively to top right beside cart -->
       <button class="icon-btn" title="Favorites / Wishlist" onclick="filterCategory('favorites')">
         <i class="fa-solid fa-heart"></i>
         <span class="badge" id="fav-count">0</span>
@@ -578,7 +618,7 @@
     </div>
   </header>
 
-  <!-- Navigation Bar (Cleaned: Dhoti, Saaj, Sanjab & Favorites moved out of standalone bar) -->
+  <!-- Navigation Bar with Integrated Search Box -->
   <nav>
     <button class="nav-btn active" id="btn-home" onclick="filterCategory('all')">
       <i class="fa-solid fa-house"></i> Home
@@ -599,21 +639,21 @@
     <a href="#contact-section" class="nav-btn">
       <i class="fa-solid fa-envelope"></i> Contact Us
     </a>
+
+    <!-- Relocated Search Box beside Contact Us -->
+    <div class="nav-search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search by name, category, or ID..." oninput="handleSearch()">
+      <span class="clear-btn" id="clearSearch" onclick="resetSearch()">Clear</span>
+    </div>
   </nav>
 
   <!-- Main Content Container -->
   <div class="container">
 
-    <!-- Search Bar -->
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass search-icon"></i>
-      <input type="text" id="searchInput" placeholder="Search by name, category, or ID (e.g., PDH-001, PSJ-005)..." oninput="handleSearch()">
-      <span class="clear-btn" id="clearSearch" onclick="resetSearch()">Clear</span>
-    </div>
-
     <!-- Dynamic Sections Container -->
     <div id="sections-wrapper" class="tab-animated">
-      <!-- Sections generated dynamically via JS -->
+      <!-- Latest Arrivals & Sections generated dynamically via JS -->
     </div>
 
     <!-- Contact Us Section -->
@@ -658,7 +698,6 @@
   </footer>
 
   <script>
-    // Categories configuration
     const categoriesConfig = [
       { id: 'dhoti', title: 'Dhoti', code: 'PDH', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80', tags: ['Cotton', 'Zari Work', 'Silk Blend', 'Traditional'] },
       { id: 'saaj', title: 'Saaj', code: 'PSJ', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80', tags: ['Handmade', 'Velvet', 'Embroidered', 'Premium'] },
@@ -666,7 +705,6 @@
       { id: 'sanjab-5', title: 'Sanjab (5 Inch)', code: 'PS5', image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80', tags: ['5 Inch', 'Heavy Border', 'Zari', 'Royal'] }
     ];
 
-    // Master products array with 20 items per section (80 products total)
     let allProducts = [];
     let cartCount = 0;
     let favorites = new Set();
@@ -695,19 +733,31 @@
       });
     }
 
-    // Render Products to DOM with 4-limit rule for Home page
+    // Render Products to DOM
     function renderProducts(productsToRender = allProducts, isHomeView = (activeCategory === 'all')) {
       const wrapper = document.getElementById('sections-wrapper');
       
-      // Trigger tab-switch animation
       wrapper.classList.remove('tab-animated');
-      void wrapper.offsetWidth; // force reflow
+      void wrapper.offsetWidth;
       wrapper.classList.add('tab-animated');
 
       wrapper.innerHTML = '';
 
+      // Add Latest Arrivals Title on Home View
+      if (isHomeView) {
+        const arrivalBanner = document.createElement('div');
+        arrivalBanner.className = 'latest-arrivals-banner';
+        arrivalBanner.innerHTML = `
+          <div class="latest-arrivals-title">
+            <h2><i class="fa-solid fa-sparkles"></i> Latest Arrivals</h2>
+            <p>Explore our exclusive traditional collections and recent additions</p>
+          </div>
+        `;
+        wrapper.appendChild(arrivalBanner);
+      }
+
       if (productsToRender.length === 0) {
-        wrapper.innerHTML = `<div style="text-align: center; padding: 50px 20px; color: #777; font-size: 1.1rem; background: white; border-radius: 12px; border: 1px solid var(--border-color);"><i class="fa-solid fa-folder-open" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 10px; display: block;"></i>No products found matching your selection.</div>`;
+        wrapper.innerHTML += `<div style="text-align: center; padding: 50px 20px; color: #777; font-size: 1.1rem; background: white; border-radius: 12px; border: 1px solid var(--border-color);"><i class="fa-solid fa-folder-open" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 10px; display: block;"></i>No products found matching your selection.</div>`;
         return;
       }
 
@@ -716,7 +766,6 @@
         
         if (catProducts.length > 0) {
           const totalCount = catProducts.length;
-          // Requirement: On Home page, only show 4 products per section. Inside category view, show all.
           const displayProducts = isHomeView ? catProducts.slice(0, 4) : catProducts;
 
           const sectionEl = document.createElement('div');
@@ -829,12 +878,10 @@
       }
       document.getElementById('fav-count').innerText = favorites.size;
       
-      // Update UI state for matching buttons
       document.querySelectorAll(`.product-card[data-id="${productId}"] .fav-btn`).forEach(btn => {
         btn.classList.toggle('active', favorites.has(productId));
       });
 
-      // If currently viewing favorites tab, re-render dynamically
       if (activeCategory === 'favorites') {
         const favProducts = allProducts.filter(p => favorites.has(p.id));
         renderProducts(favProducts, false);
