@@ -14,6 +14,7 @@
       --button-hover: #6d2a09;
       --whatsapp-green: #25d366;
       --bg-cream: #fdfbf7;
+      --bg-gradient: linear-gradient(135deg, #fdfbf7 0%, #f5ece1 100%);
       --card-bg: #ffffff;
       --text-main: #2b2b2b;
       --text-muted: #666666;
@@ -28,37 +29,48 @@
     }
 
     body {
-      background-color: var(--bg-cream);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--text-main);
       padding-bottom: 50px;
+      min-height: 100vh;
     }
 
     /* Header */
     header {
       background-color: var(--primary-brown);
       color: white;
-      padding: 15px 5%;
+      padding: 18px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
+    /* Enlarged Store Name */
     .brand-title {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 1.5rem;
-      font-weight: 700;
+      gap: 12px;
+      font-size: 2.2rem; /* Significantly bigger */
+      font-weight: 800;
       color: #ffffff;
       text-decoration: none;
+      letter-spacing: 0.5px;
+      text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    .brand-title:hover {
+      transform: scale(1.02);
     }
 
     .brand-title i {
       color: var(--accent-gold);
+      font-size: 2.4rem;
     }
 
     .header-actions {
@@ -69,21 +81,25 @@
 
     .icon-btn {
       position: relative;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(230, 161, 92, 0.3);
       color: white;
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: background 0.2s;
+      font-size: 1.1rem;
+      transition: all 0.25s ease;
     }
 
     .icon-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--button-brown);
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     .badge {
@@ -92,10 +108,11 @@
       right: -4px;
       background-color: #e74c3c;
       color: white;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: bold;
       padding: 2px 6px;
       border-radius: 10px;
+      border: 2px solid var(--primary-brown);
     }
 
     /* Navigation Bar */
@@ -104,32 +121,33 @@
       padding: 10px 5%;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       overflow-x: auto;
       white-space: nowrap;
+      border-bottom: 2px solid var(--accent-gold);
     }
 
     .nav-btn {
       background-color: transparent;
       color: #e8d0be;
       border: 1px solid rgba(230, 161, 92, 0.3);
-      padding: 8px 18px;
+      padding: 9px 20px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       transition: all 0.25s ease;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .nav-btn:hover, .nav-btn.active {
       background-color: var(--button-brown);
       color: #ffffff;
       border-color: var(--accent-gold);
-      box-shadow: 0 0 8px rgba(230, 161, 92, 0.4);
+      box-shadow: 0 2px 10px rgba(230, 161, 92, 0.3);
     }
 
     .dropdown {
@@ -141,74 +159,94 @@
       display: none;
       position: absolute;
       background-color: var(--primary-brown);
-      min-width: 180px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+      min-width: 200px;
+      box-shadow: 0px 10px 20px rgba(0,0,0,0.35);
       border-radius: 8px;
       z-index: 1001;
       top: 100%;
       left: 0;
       overflow: hidden;
-      margin-top: 5px;
+      margin-top: 6px;
+      border: 1px solid var(--accent-gold);
+      animation: fadeIn 0.25s ease-in-out;
     }
 
     .dropdown-content a {
       color: #f1e2d5;
-      padding: 10px 16px;
+      padding: 12px 18px;
       text-decoration: none;
       display: block;
-      font-size: 0.88rem;
-      transition: background 0.2s;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: background 0.2s, padding-left 0.2s;
     }
 
     .dropdown-content a:hover {
       background-color: var(--button-brown);
       color: #ffffff;
+      padding-left: 24px;
     }
 
     .dropdown:hover .dropdown-content {
       display: block;
     }
 
-    /* Search Container */
+    /* Main Container */
     .container {
       max-width: 1250px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 25px 20px;
     }
 
+    /* Search Container */
     .search-box {
-      margin: 15px 0 30px 0;
+      margin: 10px 0 35px 0;
       position: relative;
     }
 
     .search-box input {
       width: 100%;
-      padding: 14px 45px 14px 45px;
-      border: 1px solid var(--border-color);
-      border-radius: 25px;
-      font-size: 0.95rem;
+      padding: 15px 50px 15px 50px;
+      border: 2px solid var(--border-color);
+      border-radius: 30px;
+      font-size: 1rem;
       outline: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
       background-color: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 4px 18px rgba(230, 161, 92, 0.25);
     }
 
     .search-box i.search-icon {
       position: absolute;
-      left: 18px;
+      left: 20px;
       top: 50%;
       transform: translateY(-50%);
-      color: #888;
+      color: var(--button-brown);
+      font-size: 1.1rem;
     }
 
     .search-box .clear-btn {
       position: absolute;
-      right: 18px;
+      right: 20px;
       top: 50%;
       transform: translateY(-50%);
       color: #888;
       cursor: pointer;
       font-size: 0.85rem;
       display: none;
+      background: #eee;
+      padding: 4px 10px;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+
+    .search-box .clear-btn:hover {
+      background: #ddd;
     }
 
     /* Section Headers */
@@ -216,105 +254,157 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 35px 0 15px 0;
-      padding-bottom: 8px;
+      margin: 35px 0 18px 0;
+      padding-bottom: 10px;
       border-bottom: 2px solid var(--border-color);
     }
 
     .section-title {
-      font-size: 1.35rem;
+      font-size: 1.45rem;
       color: var(--primary-brown);
       font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 22px;
+      background-color: var(--accent-gold);
+      border-radius: 3px;
     }
 
     .view-all {
       color: var(--button-brown);
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: rgba(138, 56, 15, 0.08);
+      transition: all 0.2s ease;
     }
 
     .view-all:hover {
-      text-decoration: underline;
+      background: var(--button-brown);
+      color: #ffffff;
+      transform: translateX(3px);
     }
 
-    /* Product Grid */
+    /* Product Grid & Animation */
     .product-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    /* Tab Switching Fade-In Animation */
+    .tab-animated {
+      animation: fadeInUp 0.4s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .product-card {
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid var(--border-color);
       overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .product-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      transform: translateY(-6px);
+      box-shadow: 0 10px 22px rgba(74, 32, 11, 0.12);
     }
 
     .image-container {
       position: relative;
       width: 100%;
-      height: 220px;
+      height: 230px;
       background-color: #f7f3ee;
+      overflow: hidden;
     }
 
     .image-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .image-container img {
+      transform: scale(1.05);
     }
 
     .tag-badge {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #632d12;
+      top: 12px;
+      left: 12px;
+      background-color: var(--primary-brown);
       color: white;
       font-size: 0.7rem;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
     .id-badge {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 12px;
+      right: 12px;
       background-color: rgba(0, 0, 0, 0.75);
       color: #fff;
       font-size: 0.72rem;
-      padding: 3px 7px;
-      border-radius: 4px;
+      padding: 4px 8px;
+      border-radius: 6px;
       font-weight: 600;
     }
 
     .fav-btn {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
+      bottom: 12px;
+      right: 12px;
       background: white;
       border: none;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      color: #888;
-      transition: color 0.2s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      color: #ccc;
+      transition: all 0.2s ease;
+    }
+
+    .fav-btn:hover {
+      transform: scale(1.1);
+      color: #e74c3c;
     }
 
     .fav-btn.active {
@@ -322,7 +412,7 @@
     }
 
     .product-details {
-      padding: 15px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
@@ -333,27 +423,28 @@
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
+      font-weight: 600;
     }
 
     .product-title {
-      font-size: 0.95rem;
+      font-size: 0.98rem;
       font-weight: 700;
       color: var(--text-main);
       margin-bottom: 8px;
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
     .product-price {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: var(--primary-brown);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .card-actions {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       margin-top: auto;
     }
 
@@ -362,34 +453,39 @@
       background-color: var(--button-brown);
       color: white;
       border: none;
-      padding: 9px;
-      border-radius: 6px;
+      padding: 10px;
+      border-radius: 8px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 0.88rem;
-      transition: background 0.2s;
+      font-size: 0.9rem;
+      transition: background 0.2s, transform 0.1s;
     }
 
     .add-cart-btn:hover {
       background-color: var(--button-hover);
     }
 
+    .add-cart-btn:active {
+      transform: scale(0.97);
+    }
+
     .whatsapp-btn {
       background-color: var(--whatsapp-green);
       color: white;
       border: none;
-      width: 38px;
-      border-radius: 6px;
+      width: 42px;
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       text-decoration: none;
+      transition: background 0.2s;
     }
 
     .whatsapp-btn:hover {
@@ -400,52 +496,63 @@
     .contact-section {
       background: white;
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 30px;
-      margin-top: 40px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border-radius: 16px;
+      padding: 35px;
+      margin-top: 50px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.04);
     }
 
     .contact-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin-top: 20px;
+      gap: 30px;
+      margin-top: 25px;
     }
 
     .contact-card {
       display: flex;
       align-items: flex-start;
-      gap: 15px;
+      gap: 18px;
     }
 
     .contact-card i {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       color: var(--button-brown);
       background: #f7f0e9;
-      padding: 12px;
+      padding: 14px;
       border-radius: 50%;
     }
 
     .contact-info h4 {
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       color: var(--primary-brown);
+      font-size: 1.05rem;
     }
 
     .contact-info p {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.4;
+      font-size: 0.92rem;
+      line-height: 1.45;
     }
 
     /* Footer */
     footer {
       text-align: center;
-      padding: 20px;
-      margin-top: 40px;
+      padding: 24px;
+      margin-top: 50px;
       background-color: var(--primary-brown);
       color: #d1b8a5;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      border-top: 3px solid var(--accent-gold);
+    }
+
+    @media (max-width: 768px) {
+      .brand-title {
+        font-size: 1.6rem;
+      }
+      .brand-title i {
+        font-size: 1.8rem;
+      }
     }
   </style>
 </head>
@@ -453,13 +560,14 @@
 
   <!-- Header -->
   <header>
-    <a href="#" class="brand-title" onclick="filterCategory('all')">
+    <a href="javascript:void(0)" class="brand-title" onclick="filterCategory('all')">
       <i class="fa-solid fa-store"></i>
       <span>Raj Pushti Sahitya</span>
     </a>
 
     <div class="header-actions">
-      <button class="icon-btn" title="Wishlist" onclick="filterCategory('favorites')">
+      <!-- Favourites relocated exclusively to top right beside cart -->
+      <button class="icon-btn" title="Favorites / Wishlist" onclick="filterCategory('favorites')">
         <i class="fa-solid fa-heart"></i>
         <span class="badge" id="fav-count">0</span>
       </button>
@@ -470,31 +578,24 @@
     </div>
   </header>
 
-  <!-- Navigation Bar -->
+  <!-- Navigation Bar (Cleaned: Dhoti, Saaj, Sanjab & Favorites moved out of standalone bar) -->
   <nav>
-    <button class="nav-btn active" onclick="filterCategory('all')">
+    <button class="nav-btn active" id="btn-home" onclick="filterCategory('all')">
       <i class="fa-solid fa-house"></i> Home
     </button>
     
     <div class="dropdown">
-      <button class="nav-btn">
+      <button class="nav-btn" id="btn-categories">
         <i class="fa-solid fa-layer-group"></i> Categories <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
       </button>
       <div class="dropdown-content">
-        <a href="#dhoti-section" onclick="filterCategory('dhoti')">Dhoti</a>
-        <a href="#saaj-section" onclick="filterCategory('saaj')">Saaj</a>
-        <a href="#sanjab-3-section" onclick="filterCategory('sanjab-3')">Sanjab (3 Inch)</a>
-        <a href="#sanjab-5-section" onclick="filterCategory('sanjab-5')">Sanjab (5 Inch)</a>
+        <a href="javascript:void(0)" onclick="filterCategory('dhoti')"><i class="fa-solid fa-shirt"></i> Dhoti</a>
+        <a href="javascript:void(0)" onclick="filterCategory('saaj')"><i class="fa-solid fa-gem"></i> Saaj</a>
+        <a href="javascript:void(0)" onclick="filterCategory('sanjab-3')"><i class="fa-solid fa-ribbon"></i> Sanjab (3 Inch)</a>
+        <a href="javascript:void(0)" onclick="filterCategory('sanjab-5')"><i class="fa-solid fa-scroll"></i> Sanjab (5 Inch)</a>
       </div>
     </div>
 
-    <button class="nav-btn" onclick="filterCategory('dhoti')">Dhoti</button>
-    <button class="nav-btn" onclick="filterCategory('saaj')">Saaj</button>
-    <button class="nav-btn" onclick="filterCategory('sanjab-3')">Sanjab (3 Inch)</button>
-    <button class="nav-btn" onclick="filterCategory('sanjab-5')">Sanjab (5 Inch)</button>
-    <button class="nav-btn" onclick="filterCategory('favorites')">
-      <i class="fa-solid fa-star"></i> Favorites
-    </button>
     <a href="#contact-section" class="nav-btn">
       <i class="fa-solid fa-envelope"></i> Contact Us
     </a>
@@ -511,7 +612,7 @@
     </div>
 
     <!-- Dynamic Sections Container -->
-    <div id="sections-wrapper">
+    <div id="sections-wrapper" class="tab-animated">
       <!-- Sections generated dynamically via JS -->
     </div>
 
@@ -559,18 +660,20 @@
   <script>
     // Categories configuration
     const categoriesConfig = [
-      { id: 'dhoti', title: 'New Arrivals - Dhoti', code: 'PDH', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80', tags: ['Cotton', 'Zari Work', 'Silk Blend', 'Traditional'] },
-      { id: 'saaj', title: 'New Arrivals - Saaj', code: 'PSJ', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80', tags: ['Handmade', 'Velvet', 'Embroidered', 'Premium'] },
-      { id: 'sanjab-3', title: 'New Arrivals - Sanjab (3 Inch)', code: 'PS3', image: 'https://images.unsplash.com/photo-1606760227091-3dd850d492a6?auto=format&fit=crop&w=400&q=80', tags: ['3 Inch', 'Gold Border', 'Satin', 'Designer'] },
-      { id: 'sanjab-5', title: 'New Arrivals - Sanjab (5 Inch)', code: 'PS5', image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80', tags: ['5 Inch', 'Heavy Border', 'Zari', 'Royal'] }
+      { id: 'dhoti', title: 'Dhoti', code: 'PDH', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80', tags: ['Cotton', 'Zari Work', 'Silk Blend', 'Traditional'] },
+      { id: 'saaj', title: 'Saaj', code: 'PSJ', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80', tags: ['Handmade', 'Velvet', 'Embroidered', 'Premium'] },
+      { id: 'sanjab-3', title: 'Sanjab (3 Inch)', code: 'PS3', image: 'https://images.unsplash.com/photo-1606760227091-3dd850d492a6?auto=format&fit=crop&w=400&q=80', tags: ['3 Inch', 'Gold Border', 'Satin', 'Designer'] },
+      { id: 'sanjab-5', title: 'Sanjab (5 Inch)', code: 'PS5', image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80', tags: ['5 Inch', 'Heavy Border', 'Zari', 'Royal'] }
     ];
 
-    // Master products array with 20 items per section (80 products in total)
+    // Master products array with 20 items per section (80 products total)
     let allProducts = [];
     let cartCount = 0;
     let favorites = new Set();
+    let activeCategory = 'all';
 
     function generateProducts() {
+      allProducts = [];
       categoriesConfig.forEach(cat => {
         for (let i = 1; i <= 20; i++) {
           const formattedNum = String(i).padStart(3, '0');
@@ -582,8 +685,8 @@
           allProducts.push({
             id: pId,
             categoryId: cat.id,
-            categoryName: cat.title.replace('New Arrivals - ', ''),
-            title: `${tag} Traditional ${cat.title.replace('New Arrivals - ', '')} Item ${i}`,
+            categoryName: cat.title,
+            title: `${tag} Traditional ${cat.title} Item ${i}`,
             price: price,
             tag: tag,
             image: cat.image
@@ -592,30 +695,41 @@
       });
     }
 
-    // Render Products to DOM
-    function renderProducts(productsToRender = allProducts) {
+    // Render Products to DOM with 4-limit rule for Home page
+    function renderProducts(productsToRender = allProducts, isHomeView = (activeCategory === 'all')) {
       const wrapper = document.getElementById('sections-wrapper');
+      
+      // Trigger tab-switch animation
+      wrapper.classList.remove('tab-animated');
+      void wrapper.offsetWidth; // force reflow
+      wrapper.classList.add('tab-animated');
+
       wrapper.innerHTML = '';
 
       if (productsToRender.length === 0) {
-        wrapper.innerHTML = `<div style="text-align: center; padding: 40px; color: #777;">No products found matching your search.</div>`;
+        wrapper.innerHTML = `<div style="text-align: center; padding: 50px 20px; color: #777; font-size: 1.1rem; background: white; border-radius: 12px; border: 1px solid var(--border-color);"><i class="fa-solid fa-folder-open" style="font-size: 2.5rem; color: var(--accent-gold); margin-bottom: 10px; display: block;"></i>No products found matching your selection.</div>`;
         return;
       }
 
       categoriesConfig.forEach(cat => {
-        const catProducts = productsToRender.filter(p => p.categoryId === cat.id);
+        let catProducts = productsToRender.filter(p => p.categoryId === cat.id);
         
         if (catProducts.length > 0) {
+          const totalCount = catProducts.length;
+          // Requirement: On Home page, only show 4 products per section. Inside category view, show all.
+          const displayProducts = isHomeView ? catProducts.slice(0, 4) : catProducts;
+
           const sectionEl = document.createElement('div');
           sectionEl.id = `${cat.id}-section`;
+          sectionEl.style.marginBottom = '35px';
           
-          let cardsHTML = catProducts.map(p => `
+          let cardsHTML = displayProducts.map(p => `
             <div class="product-card" data-id="${p.id}">
               <div class="image-container">
-                <img src="${p.image}" alt="${p.title}">
+                <img src="${p.image}" alt="${p.title}" loading="lazy">
                 <span class="tag-badge">${p.tag}</span>
                 <span class="id-badge">${p.id}</span>
-                <button class="fav-btn ${favorites.has(p.id) ? 'active' : ''}" onclick="toggleFavorite('${p.id}')">
+                <button class="fav-btn ${favorites.has(p.id) ? 'active' : ''}" onclick="toggleFavorite('${p.id}')" title="Add to Favorites">
                   <i class="fa-solid fa-heart"></i>
                 </button>
               </div>
@@ -637,8 +751,8 @@
 
           sectionEl.innerHTML = `
             <div class="section-header">
-              <h2 class="section-title">${cat.title} (${catProducts.length})</h2>
-              <a href="javascript:void(0)" class="view-all" onclick="filterCategory('${cat.id}')">View All &rarr;</a>
+              <h2 class="section-title">${cat.title} ${isHomeView ? '(Showing 4 of ' + totalCount + ')' : '(' + totalCount + ')'}</h2>
+              ${isHomeView ? `<a href="javascript:void(0)" class="view-all" onclick="filterCategory('${cat.id}')">View All &rarr;</a>` : ''}
             </div>
             <div class="product-grid">
               ${cardsHTML}
@@ -652,17 +766,26 @@
 
     // Filter Logic
     function filterCategory(catId) {
+      activeCategory = catId;
       document.querySelectorAll('nav .nav-btn').forEach(btn => btn.classList.remove('active'));
       
+      const homeBtn = document.getElementById('btn-home');
+      const catBtn = document.getElementById('btn-categories');
+
       if (catId === 'all') {
-        renderProducts(allProducts);
+        homeBtn.classList.add('active');
+        renderProducts(allProducts, true);
       } else if (catId === 'favorites') {
+        catBtn.classList.remove('active');
         const favProducts = allProducts.filter(p => favorites.has(p.id));
-        renderProducts(favProducts);
+        renderProducts(favProducts, false);
       } else {
+        catBtn.classList.add('active');
         const filtered = allProducts.filter(p => p.categoryId === catId);
-        renderProducts(filtered);
+        renderProducts(filtered, false);
       }
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Search Logic
@@ -683,13 +806,13 @@
         p.tag.toLowerCase().includes(query)
       );
 
-      renderProducts(filtered);
+      renderProducts(filtered, false);
     }
 
     function resetSearch() {
       document.getElementById('searchInput').value = '';
       document.getElementById('clearSearch').style.display = 'none';
-      renderProducts(allProducts);
+      filterCategory(activeCategory);
     }
 
     // Interactive Actions
@@ -708,14 +831,20 @@
       
       // Update UI state for matching buttons
       document.querySelectorAll(`.product-card[data-id="${productId}"] .fav-btn`).forEach(btn => {
-        btn.classList.toggle('active');
+        btn.classList.toggle('active', favorites.has(productId));
       });
+
+      // If currently viewing favorites tab, re-render dynamically
+      if (activeCategory === 'favorites') {
+        const favProducts = allProducts.filter(p => favorites.has(p.id));
+        renderProducts(favProducts, false);
+      }
     }
 
     // Initialization
     window.onload = () => {
       generateProducts();
-      renderProducts();
+      renderProducts(allProducts, true);
     };
   </script>
 </body>
