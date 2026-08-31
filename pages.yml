@@ -1,0 +1,26 @@
+media: images
+content:
+  - name: products
+    label: Products Catalog
+    file: products.json
+    fields:
+      - name: id
+        label: Product ID (e.g., RPS-103)
+        type: string
+        required: true
+      - name: name
+        label: Product Name
+        type: string
+        required: true
+      - name: category
+        label: Category Name (e.g., Saaj, Dhoti)
+        type: string
+        required: true
+      - name: price
+        label: Price (e.g., ₹300)
+        type: string
+        required: true
+      - name: image
+        label: Product Image
+        type: image
+        required: true
