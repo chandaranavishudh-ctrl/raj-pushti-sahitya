@@ -1,21 +1,21 @@
 media: images
 content:
   - name: products
-    label: "Products Catalog"
-    file: "products.json"
+    label: Products Catalog
+    file: products.json
     fields:
       - name: id
-        label: "Product ID"
+        label: Product ID
         type: string
       - name: name
-        label: "Product Name"
+        label: Product Name
         type: string
       - name: category
-        label: "Category Name"
+        label: Category Name
         type: string
       - name: price
-        label: "Price"
+        label: Price
         type: string
       - name: image
-        label: "Product Image"
+        label: Product Image
         type: image
