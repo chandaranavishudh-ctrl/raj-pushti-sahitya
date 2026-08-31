@@ -5,7 +5,7 @@ content:
     file: products.json
     fields:
       - name: id
-        label: Product ID (e.g., RPS-103)
+        label: Product ID
         type: string
         required: true
       - name: name
@@ -13,11 +13,11 @@ content:
         type: string
         required: true
       - name: category
-        label: Category Name (e.g., Saaj, Dhoti)
+        label: Category Name
         type: string
         required: true
       - name: price
-        label: Price (e.g., ₹300)
+        label: Price
         type: string
         required: true
       - name: image
