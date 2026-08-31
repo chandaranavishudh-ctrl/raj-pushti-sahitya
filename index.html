@@ -1,425 +1,722 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Catalog & Wishlist</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raj Pushti Sahitya</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-brown: #4a200b;
+      --secondary-brown: #331506;
+      --accent-gold: #e6a15c;
+      --button-brown: #8a380f;
+      --button-hover: #6d2a09;
+      --whatsapp-green: #25d366;
+      --bg-cream: #fdfbf7;
+      --card-bg: #ffffff;
+      --text-main: #2b2b2b;
+      --text-muted: #666666;
+      --border-color: #eee3d8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      padding-bottom: 50px;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--primary-brown);
+      color: white;
+      padding: 15px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-title i {
+      color: var(--accent-gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .icon-btn {
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background-color: #e74c3c;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: var(--secondary-brown);
+      padding: 10px 5%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .nav-btn {
+      background-color: transparent;
+      color: #e8d0be;
+      border: 1px solid rgba(230, 161, 92, 0.3);
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background-color: var(--button-brown);
+      color: #ffffff;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 8px rgba(230, 161, 92, 0.4);
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--primary-brown);
+      min-width: 180px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.3);
+      border-radius: 8px;
+      z-index: 1001;
+      top: 100%;
+      left: 0;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .dropdown-content a {
+      color: #f1e2d5;
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 0.88rem;
+      transition: background 0.2s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--button-brown);
+      color: #ffffff;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Search Container */
+    .container {
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .search-box {
+      margin: 15px 0 30px 0;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 45px 14px 45px;
+      border: 1px solid var(--border-color);
+      border-radius: 25px;
+      font-size: 0.95rem;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      background-color: #ffffff;
+    }
+
+    .search-box i.search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+
+    .search-box .clear-btn {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      cursor: pointer;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 35px 0 15px 0;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      color: var(--primary-brown);
+      font-weight: 700;
+    }
+
+    .view-all {
+      color: var(--button-brown);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .view-all:hover {
+      text-decoration: underline;
+    }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: 220px;
+      background-color: #f7f3ee;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .tag-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #632d12;
+      color: white;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .id-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      font-size: 0.72rem;
+      padding: 3px 7px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .fav-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      color: #888;
+      transition: color 0.2s;
+    }
+
+    .fav-btn.active {
+      color: #e74c3c;
+    }
+
+    .product-details {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .category-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .product-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .product-price {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary-brown);
+      margin-bottom: 12px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .add-cart-btn {
+      flex: 1;
+      background-color: var(--button-brown);
+      color: white;
+      border: none;
+      padding: 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      transition: background 0.2s;
+    }
+
+    .add-cart-btn:hover {
+      background-color: var(--button-hover);
+    }
+
+    .whatsapp-btn {
+      background-color: var(--whatsapp-green);
+      color: white;
+      border: none;
+      width: 38px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #1eb954;
+    }
+
+    /* Contact Section Styling */
+    .contact-section {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 30px;
+      margin-top: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .contact-card i {
+      font-size: 1.5rem;
+      color: var(--button-brown);
+      background: #f7f0e9;
+      padding: 12px;
+      border-radius: 50%;
+    }
+
+    .contact-info h4 {
+      margin-bottom: 5px;
+      color: var(--primary-brown);
+    }
+
+    .contact-info p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+      background-color: var(--primary-brown);
+      color: #d1b8a5;
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
-<body class="bg-amber-50/30 text-gray-800 min-h-screen">
+<body>
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 bg-amber-900 text-amber-100 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <h1 class="text-xl font-bold tracking-wide cursor-pointer" onclick="switchTab('home')">
-                <i class="fa-solid fa-store text-amber-400 mr-2"></i>Traditional Collection
-            </h1>
-            
-            <div class="flex items-center gap-3">
-                <button onclick="switchTab('wishlist')" class="relative p-2 rounded-lg bg-amber-800 hover:bg-amber-700 transition" title="Wishlist">
-                    <i class="fa-solid fa-heart text-rose-400 text-lg"></i>
-                    <span id="wishlistBadge" class="absolute -top-1 -right-1 bg-rose-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                </button>
-                <button onclick="toggleCart()" class="relative p-2 rounded-lg bg-amber-800 hover:bg-amber-700 transition" title="Cart">
-                    <i class="fa-solid fa-shopping-cart text-amber-300 text-lg"></i>
-                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-amber-500 text-gray-900 text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
-                </button>
-            </div>
-        </div>
+  <!-- Header -->
+  <header>
+    <a href="#" class="brand-title" onclick="filterCategory('all')">
+      <i class="fa-solid fa-store"></i>
+      <span>Raj Pushti Sahitya</span>
+    </a>
 
-        <!-- Navigation Tabs -->
-        <nav class="bg-amber-950 px-4 py-2 flex gap-2 overflow-x-auto text-xs font-semibold">
-            <button id="nav-home" onclick="switchTab('home')" class="nav-btn px-4 py-1.5 rounded-md border border-amber-700 bg-amber-800 text-amber-100 whitespace-nowrap">Home</button>
-            <button id="nav-dhoti" onclick="switchTab('dhoti')" class="nav-btn px-4 py-1.5 rounded-md border border-amber-700 text-amber-200 hover:bg-amber-800 whitespace-nowrap">Dhoti</button>
-            <button id="nav-saaj" onclick="switchTab('saaj')" class="nav-btn px-4 py-1.5 rounded-md border border-amber-700 text-amber-200 hover:bg-amber-800 whitespace-nowrap">Saaj</button>
-            <button id="nav-sanjab3" onclick="switchTab('sanjab3')" class="nav-btn px-4 py-1.5 rounded-md border border-amber-700 text-amber-200 hover:bg-amber-800 whitespace-nowrap">Sanjab (3 Inch)</button>
-            <button id="nav-sanjab5" onclick="switchTab('sanjab5')" class="nav-btn px-4 py-1.5 rounded-md border border-amber-700 text-amber-200 hover:bg-amber-800 whitespace-nowrap">Sanjab (5 Inch)</button>
-            <button id="nav-wishlist" onclick="switchTab('wishlist')" class="nav-btn px-4 py-1.5 rounded-md border border-amber-700 text-amber-200 hover:bg-amber-800 whitespace-nowrap">Favorites</button>
-        </nav>
-    </header>
+    <div class="header-actions">
+      <button class="icon-btn" title="Wishlist" onclick="filterCategory('favorites')">
+        <i class="fa-solid fa-heart"></i>
+        <span class="badge" id="fav-count">0</span>
+      </button>
+      <button class="icon-btn" title="Cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="badge" id="cart-count">0</span>
+      </button>
+    </div>
+  </header>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 py-6">
-
-        <!-- Search Bar -->
-        <div class="mb-6 relative">
-            <div class="flex items-center bg-white border border-amber-200 rounded-xl shadow-sm overflow-hidden px-3 py-2">
-                <i class="fa-solid fa-magnifying-glass text-amber-700 mr-2"></i>
-                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search by name, category, or ID (e.g., PDH-001)..." class="w-full text-sm outline-none bg-transparent">
-                <button onclick="clearSearch()" class="text-xs text-gray-400 hover:text-gray-600 px-2">Clear</button>
-            </div>
-        </div>
-
-        <!-- Search Results View -->
-        <section id="searchResultsSection" class="hidden mb-8">
-            <h2 class="text-lg font-bold text-amber-950 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-list-check"></i> Search Results
-            </h2>
-            <div id="searchGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </section>
-
-        <!-- HOME TAB -->
-        <div id="tab-home" class="tab-content active space-y-8">
-            <!-- New Arrivals Section (4 items per category) -->
-            <section>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-amber-950 flex items-center gap-2">
-                        <i class="fa-solid fa-sparkles text-amber-600"></i> New Arrivals - Dhoti
-                    </h2>
-                    <button onclick="switchTab('dhoti')" class="text-xs font-semibold text-amber-800 hover:underline">View All →</button>
-                </div>
-                <div id="homeDhotiGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-            </section>
-
-            <section>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-amber-950 flex items-center gap-2">
-                        <i class="fa-solid fa-sparkles text-amber-600"></i> New Arrivals - Saaj
-                    </h2>
-                    <button onclick="switchTab('saaj')" class="text-xs font-semibold text-amber-800 hover:underline">View All →</button>
-                </div>
-                <div id="homeSaajGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-            </section>
-
-            <section>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-bold text-amber-950 flex items-center gap-2">
-                        <i class="fa-solid fa-sparkles text-amber-600"></i> New Arrivals - Sanjab (3" & 5")
-                    </h2>
-                    <div class="flex gap-2">
-                        <button onclick="switchTab('sanjab3')" class="text-xs font-semibold text-amber-800 hover:underline">3" All →</button>
-                        <button onclick="switchTab('sanjab5')" class="text-xs font-semibold text-amber-800 hover:underline">5" All →</button>
-                    </div>
-                </div>
-                <div id="homeSanjabGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-            </section>
-        </div>
-
-        <!-- DHOTI TAB -->
-        <div id="tab-dhoti" class="tab-content">
-            <h2 class="text-xl font-bold text-amber-950 mb-4">Dhoti Collection (20 Products)</h2>
-            <div id="dhotiGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </div>
-
-        <!-- SAAJ TAB -->
-        <div id="tab-saaj" class="tab-content">
-            <h2 class="text-xl font-bold text-amber-950 mb-4">Saaj Collection (20 Products)</h2>
-            <div id="saajGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </div>
-
-        <!-- SANJAB 3 INCH TAB -->
-        <div id="tab-sanjab3" class="tab-content">
-            <h2 class="text-xl font-bold text-amber-950 mb-4">Sanjab - 3 Inch Collection</h2>
-            <div id="sanjab3Grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </div>
-
-        <!-- SANJAB 5 INCH TAB -->
-        <div id="tab-sanjab5" class="tab-content">
-            <h2 class="text-xl font-bold text-amber-950 mb-4">Sanjab - 5 Inch Collection</h2>
-            <div id="sanjab5Grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </div>
-
-        <!-- WISHLIST TAB -->
-        <div id="tab-wishlist" class="tab-content">
-            <h2 class="text-xl font-bold text-amber-950 mb-4 flex items-center gap-2">
-                <i class="fa-solid fa-heart text-rose-500"></i> My Favorites & Wishlist
-            </h2>
-            <div id="wishlistGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-        </div>
-
-    </main>
-
-    <!-- Cart Side Drawer -->
-    <div id="cartDrawer" class="fixed top-0 right-0 h-full w-80 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
-        <div class="p-4 bg-amber-900 text-white flex justify-between items-center">
-            <h3 class="font-bold text-base"><i class="fa-solid fa-cart-shopping mr-2"></i>Shopping Cart</h3>
-            <button onclick="toggleCart()" class="text-white hover:text-amber-200 text-lg font-bold">&times;</button>
-        </div>
-        <div id="cartItems" class="p-4 flex-1 overflow-y-auto space-y-3"></div>
-        <div class="p-4 border-t border-amber-100 bg-amber-50">
-            <button onclick="checkoutCartWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-bold text-sm transition flex items-center justify-center gap-2">
-                <i class="fa-brands fa-whatsapp text-lg"></i> Inquire Cart on WhatsApp
-            </button>
-        </div>
+  <!-- Navigation Bar -->
+  <nav>
+    <button class="nav-btn active" onclick="filterCategory('all')">
+      <i class="fa-solid fa-house"></i> Home
+    </button>
+    
+    <div class="dropdown">
+      <button class="nav-btn">
+        <i class="fa-solid fa-layer-group"></i> Categories <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
+      </button>
+      <div class="dropdown-content">
+        <a href="#dhoti-section" onclick="filterCategory('dhoti')">Dhoti</a>
+        <a href="#saaj-section" onclick="filterCategory('saaj')">Saaj</a>
+        <a href="#sanjab-3-section" onclick="filterCategory('sanjab-3')">Sanjab (3 Inch)</a>
+        <a href="#sanjab-5-section" onclick="filterCategory('sanjab-5')">Sanjab (5 Inch)</a>
+      </div>
     </div>
 
-<script>
-    const WHATSAPP_NUM = "919081715777";
-    let productsData = [];
-    let cart = [];
-    let wishlist = JSON.parse(localStorage.getItem('userWishlist')) || [];
+    <button class="nav-btn" onclick="filterCategory('dhoti')">Dhoti</button>
+    <button class="nav-btn" onclick="filterCategory('saaj')">Saaj</button>
+    <button class="nav-btn" onclick="filterCategory('sanjab-3')">Sanjab (3 Inch)</button>
+    <button class="nav-btn" onclick="filterCategory('sanjab-5')">Sanjab (5 Inch)</button>
+    <button class="nav-btn" onclick="filterCategory('favorites')">
+      <i class="fa-solid fa-star"></i> Favorites
+    </button>
+    <a href="#contact-section" class="nav-btn">
+      <i class="fa-solid fa-envelope"></i> Contact Us
+    </a>
+  </nav>
 
-    // Expanded Product Data: 20 products per category (60 Total)
-    const FALLBACK_PRODUCTS = [
-        // DHOTI (20 Products)
-        { id: "PDH-001", name: "Pure Cotton White Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹350", isNewArrival: true, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-002", name: "Zari Border Traditional Dhoti", category: "Dhoti", subCategory: "Zari Work", price: "₹480", isNewArrival: true, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-003", name: "Silk Blend Festival Dhoti", category: "Dhoti", subCategory: "Silk Blend", price: "₹650", isNewArrival: true, image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-004", name: "Kachha Border Cotton Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹400", isNewArrival: true, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-005", name: "Royal South Silk Dhoti", category: "Dhoti", subCategory: "Silk", price: "₹890", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-006", name: "Handloom Fine Linen Dhoti", category: "Dhoti", subCategory: "Linen", price: "₹520", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-007", name: "Golden Temple Border Dhoti", category: "Dhoti", subCategory: "Zari Work", price: "₹580", isNewArrival: false, image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-008", name: "Organic Malmal Cotton Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹380", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-009", name: "Pooja Special Red Edge Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹420", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-010", name: "Embroidered Hemline Dhoti", category: "Dhoti", subCategory: "Designer", price: "₹720", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-011", name: "Classic Off-White Pancha Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹360", isNewArrival: false, image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-012", name: "Silver Zari Festive Dhoti", category: "Dhoti", subCategory: "Zari Work", price: "₹610", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-013", name: "Soft Tissue Silk Dhoti", category: "Dhoti", subCategory: "Silk", price: "₹940", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-014", name: "Double Layered Premium Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹490", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-015", name: "Casual Everyday Wear Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹310", isNewArrival: false, image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-016", name: "Rich Kanjeevaram Border Dhoti", category: "Dhoti", subCategory: "Silk Blend", price: "₹850", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-017", name: "Maroon Border Wedding Dhoti", category: "Dhoti", subCategory: "Zari Work", price: "₹670", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-018", name: "Contrast Border Designer Dhoti", category: "Dhoti", subCategory: "Designer", price: "₹540", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-019", name: "Traditional Tussar Silk Dhoti", category: "Dhoti", subCategory: "Silk", price: "₹990", isNewArrival: false, image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=500&q=80" },
-        { id: "PDH-020", name: "Mercerized Soft Cotton Dhoti", category: "Dhoti", subCategory: "Cotton", price: "₹450", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
+  <!-- Main Content Container -->
+  <div class="container">
 
-        // SAAJ (20 Products)
-        { id: "PS-001", name: "Traditional Handcrafted Saaj", category: "Saaj", subCategory: "Decorative Saaj", price: "₹750", isNewArrival: true, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-002", name: "Velvet Embroidered Saaj", category: "Saaj", subCategory: "Velvet Saaj", price: "₹950", isNewArrival: true, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-003", name: "Golden Thread Work Saaj", category: "Saaj", subCategory: "Zari Saaj", price: "₹1100", isNewArrival: true, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-004", name: "Satin Silk Shringar Saaj", category: "Saaj", subCategory: "Silk Saaj", price: "₹820", isNewArrival: true, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-005", name: "Royal Pearl Work Saaj", category: "Saaj", subCategory: "Decorative Saaj", price: "₹1250", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-006", name: "Classic Red Brocade Saaj", category: "Saaj", subCategory: "Silk Saaj", price: "₹880", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-007", name: "Heavy Kundan Stone Saaj", category: "Saaj", subCategory: "Decorative Saaj", price: "₹1400", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-008", name: "Floral Motif Embroidered Saaj", category: "Saaj", subCategory: "Velvet Saaj", price: "₹990", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-009", name: "Temple Heritage Golden Saaj", category: "Saaj", subCategory: "Zari Saaj", price: "₹1150", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-010", name: "Emerald Green Velvet Saaj", category: "Saaj", subCategory: "Velvet Saaj", price: "₹920", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-011", name: "Peacock Motif Shringar Saaj", category: "Saaj", subCategory: "Decorative Saaj", price: "₹1050", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-012", name: "Silver Thread Antique Saaj", category: "Saaj", subCategory: "Zari Saaj", price: "₹1180", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-013", name: "Maroon Pure Silk Saaj", category: "Saaj", subCategory: "Silk Saaj", price: "₹860", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-014", name: "Gota Patti Work Saaj", category: "Saaj", subCategory: "Decorative Saaj", price: "₹790", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-015", name: "Deep Crimson Velvet Saaj", category: "Saaj", subCategory: "Velvet Saaj", price: "₹970", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-016", name: "Yellow Pitambari Silk Saaj", category: "Saaj", subCategory: "Silk Saaj", price: "₹840", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-017", name: "Zardozi Hand Crafted Saaj", category: "Saaj", subCategory: "Zari Saaj", price: "₹1350", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-018", name: "Designer Cut-Work Saaj", category: "Saaj", subCategory: "Decorative Saaj", price: "₹910", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-019", name: "Royal Purple Silk Saaj", category: "Saaj", subCategory: "Silk Saaj", price: "₹890", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PS-020", name: "Traditional Festive Gold Saaj", category: "Saaj", subCategory: "Zari Saaj", price: "₹1080", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
+    <!-- Search Bar -->
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search by name, category, or ID (e.g., PDH-001, PSJ-005)..." oninput="handleSearch()">
+      <span class="clear-btn" id="clearSearch" onclick="resetSearch()">Clear</span>
+    </div>
 
-        // SANJAB 3 INCH (10 Products)
-        { id: "PSJ-001", name: "Sanjab 3 Inch - Classic", category: "Sanjab", subCategory: "3 Inch", price: "₹150", isNewArrival: true, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-002", name: "Sanjab 3 Inch - Designer Zari", category: "Sanjab", subCategory: "3 Inch", price: "₹180", isNewArrival: true, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-005", name: "Sanjab 3 Inch - Fine Cotton Edge", category: "Sanjab", subCategory: "3 Inch", price: "₹140", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-006", name: "Sanjab 3 Inch - Golden Motif", category: "Sanjab", subCategory: "3 Inch", price: "₹190", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-007", name: "Sanjab 3 Inch - Velvet Finish", category: "Sanjab", subCategory: "3 Inch", price: "₹210", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-008", name: "Sanjab 3 Inch - Silk Trim", category: "Sanjab", subCategory: "3 Inch", price: "₹170", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-009", name: "Sanjab 3 Inch - Silver Embroidery", category: "Sanjab", subCategory: "3 Inch", price: "₹200", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-010", name: "Sanjab 3 Inch - Red Festival Lace", category: "Sanjab", subCategory: "3 Inch", price: "₹160", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-011", name: "Sanjab 3 Inch - Brocade Trim", category: "Sanjab", subCategory: "3 Inch", price: "₹220", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-012", name: "Sanjab 3 Inch - Plain Temple Border", category: "Sanjab", subCategory: "3 Inch", price: "₹130", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
+    <!-- Dynamic Sections Container -->
+    <div id="sections-wrapper">
+      <!-- Sections generated dynamically via JS -->
+    </div>
 
-        // SANJAB 5 INCH (10 Products)
-        { id: "PSJ-003", name: "Sanjab 5 Inch - Classic Silk", category: "Sanjab", subCategory: "5 Inch", price: "₹260", isNewArrival: true, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-004", name: "Sanjab 5 Inch - Heavy Border", category: "Sanjab", subCategory: "5 Inch", price: "₹320", isNewArrival: true, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-013", name: "Sanjab 5 Inch - Royal Zari Wide", category: "Sanjab", subCategory: "5 Inch", price: "₹350", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-014", name: "Sanjab 5 Inch - Velvet Gold Border", category: "Sanjab", subCategory: "5 Inch", price: "₹380", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-015", name: "Sanjab 5 Inch - Traditional Cotton Wide", category: "Sanjab", subCategory: "5 Inch", price: "₹240", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-016", name: "Sanjab 5 Inch - Peacock Designer", category: "Sanjab", subCategory: "5 Inch", price: "₹390", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-017", name: "Sanjab 5 Inch - Temple Motif Lace", category: "Sanjab", subCategory: "5 Inch", price: "₹290", isNewArrival: false, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-018", name: "Sanjab 5 Inch - Silver Zari Premium", category: "Sanjab", subCategory: "5 Inch", price: "₹340", isNewArrival: false, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-019", name: "Sanjab 5 Inch - Satin Silk Trim", category: "Sanjab", subCategory: "5 Inch", price: "₹280", isNewArrival: false, image: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=500&q=80" },
-        { id: "PSJ-020", name: "Sanjab 5 Inch - Deep Red Bridal Border", category: "Sanjab", subCategory: "5 Inch", price: "₹410", isNewArrival: false, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" }
+    <!-- Contact Us Section -->
+    <div class="contact-section" id="contact-section">
+      <h2 class="section-title"><i class="fa-solid fa-address-book"></i> Contact Us</h2>
+      <p style="color: var(--text-muted); margin-top: 5px;">Get in touch with Raj Pushti Sahitya for inquiries & custom orders.</p>
+      
+      <div class="contact-grid">
+        <div class="contact-card">
+          <i class="fa-solid fa-phone"></i>
+          <div class="contact-info">
+            <h4>Phone & WhatsApp</h4>
+            <p>+91 98765 43210</p>
+            <p>Mon - Sat: 10:00 AM - 8:00 PM</p>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <i class="fa-solid fa-envelope"></i>
+          <div class="contact-info">
+            <h4>Email Support</h4>
+            <p>info@rajpushtisahitya.com</p>
+            <p>support@rajpushtisahitya.com</p>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <i class="fa-solid fa-location-dot"></i>
+          <div class="contact-info">
+            <h4>Store Location</h4>
+            <p>Raj Pushti Sahitya Store,</p>
+            <p>Main Market Road, Gujarat, India</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    &copy; 2026 Raj Pushti Sahitya. All Rights Reserved.
+  </footer>
+
+  <script>
+    // Categories configuration
+    const categoriesConfig = [
+      { id: 'dhoti', title: 'New Arrivals - Dhoti', code: 'PDH', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=400&q=80', tags: ['Cotton', 'Zari Work', 'Silk Blend', 'Traditional'] },
+      { id: 'saaj', title: 'New Arrivals - Saaj', code: 'PSJ', image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=400&q=80', tags: ['Handmade', 'Velvet', 'Embroidered', 'Premium'] },
+      { id: 'sanjab-3', title: 'New Arrivals - Sanjab (3 Inch)', code: 'PS3', image: 'https://images.unsplash.com/photo-1606760227091-3dd850d492a6?auto=format&fit=crop&w=400&q=80', tags: ['3 Inch', 'Gold Border', 'Satin', 'Designer'] },
+      { id: 'sanjab-5', title: 'New Arrivals - Sanjab (5 Inch)', code: 'PS5', image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&w=400&q=80', tags: ['5 Inch', 'Heavy Border', 'Zari', 'Royal'] }
     ];
 
-    // Load Products
-    async function loadProducts() {
-        try {
-            const res = await fetch('products.json');
-            if (!res.ok) throw new Error("Could not fetch file");
-            productsData = await res.json();
-        } catch (err) {
-            productsData = FALLBACK_PRODUCTS;
+    // Master products array with 20 items per section (80 products in total)
+    let allProducts = [];
+    let cartCount = 0;
+    let favorites = new Set();
+
+    function generateProducts() {
+      categoriesConfig.forEach(cat => {
+        for (let i = 1; i <= 20; i++) {
+          const formattedNum = String(i).padStart(3, '0');
+          const pId = `${cat.code}-${formattedNum}`;
+          const tag = cat.tags[(i - 1) % cat.tags.length];
+          const basePrices = { 'dhoti': 350, 'saaj': 550, 'sanjab-3': 280, 'sanjab-5': 420 };
+          const price = basePrices[cat.id] + (i * 25);
+
+          allProducts.push({
+            id: pId,
+            categoryId: cat.id,
+            categoryName: cat.title.replace('New Arrivals - ', ''),
+            title: `${tag} Traditional ${cat.title.replace('New Arrivals - ', '')} Item ${i}`,
+            price: price,
+            tag: tag,
+            image: cat.image
+          });
         }
-        updateWishlistBadge();
-        renderAllViews();
+      });
     }
 
-    // Wishlist / Favorites Logic
-    function toggleWishlist(id) {
-        if (wishlist.includes(id)) {
-            wishlist = wishlist.filter(item => item !== id);
-        } else {
-            wishlist.push(id);
-        }
-        localStorage.setItem('userWishlist', JSON.stringify(wishlist));
-        updateWishlistBadge();
-        renderAllViews();
-    }
+    // Render Products to DOM
+    function renderProducts(productsToRender = allProducts) {
+      const wrapper = document.getElementById('sections-wrapper');
+      wrapper.innerHTML = '';
 
-    function updateWishlistBadge() {
-        document.getElementById('wishlistBadge').innerText = wishlist.length;
-    }
+      if (productsToRender.length === 0) {
+        wrapper.innerHTML = `<div style="text-align: center; padding: 40px; color: #777;">No products found matching your search.</div>`;
+        return;
+      }
 
-    // Tab Switching Logic
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.classList.remove('bg-amber-800', 'border-amber-400');
-            btn.classList.add('text-amber-200');
-        });
+      categoriesConfig.forEach(cat => {
+        const catProducts = productsToRender.filter(p => p.categoryId === cat.id);
         
-        const activeTab = document.getElementById(`tab-${tabId}`);
-        const activeNav = document.getElementById(`nav-${tabId}`);
-        
-        if (activeTab) activeTab.classList.add('active');
-        if (activeNav) {
-            activeNav.classList.add('bg-amber-800', 'border-amber-400');
-            activeNav.classList.remove('text-amber-200');
-        }
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Create Product Card HTML (Includes Heart Icon for Wishlist)
-    function createProductCard(p) {
-        const isFav = wishlist.includes(p.id);
-        return `
-            <div class="bg-white rounded-xl shadow-sm border border-amber-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition transform hover:-translate-y-1 relative">
-                <div>
-                    <div class="relative">
-                        <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover">
-                        ${p.subCategory ? `<span class="absolute top-2 left-2 bg-amber-800 text-amber-100 font-bold text-[10px] px-2 py-0.5 rounded shadow">${p.subCategory}</span>` : ''}
-                        <span class="absolute top-2 right-2 bg-gray-900/90 text-amber-300 font-mono text-[10px] px-2 py-0.5 rounded font-bold">${p.id}</span>
-                        
-                        <!-- Heart / Wishlist Button -->
-                        <button onclick="toggleWishlist('${p.id}')" class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white/90 shadow flex items-center justify-center transition hover:scale-110">
-                            <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular text-gray-400'} fa-heart text-sm"></i>
-                        </button>
-                    </div>
-                    <div class="p-3">
-                        <span class="text-[10px] uppercase tracking-wider text-amber-700 font-bold">${p.category}</span>
-                        <h3 class="font-bold text-gray-800 text-sm mt-0.5 line-clamp-1">${p.name}</h3>
-                        <p class="text-amber-900 font-bold mt-1 text-sm">${p.price}</p>
-                    </div>
+        if (catProducts.length > 0) {
+          const sectionEl = document.createElement('div');
+          sectionEl.id = `${cat.id}-section`;
+          
+          let cardsHTML = catProducts.map(p => `
+            <div class="product-card" data-id="${p.id}">
+              <div class="image-container">
+                <img src="${p.image}" alt="${p.title}">
+                <span class="tag-badge">${p.tag}</span>
+                <span class="id-badge">${p.id}</span>
+                <button class="fav-btn ${favorites.has(p.id) ? 'active' : ''}" onclick="toggleFavorite('${p.id}')">
+                  <i class="fa-solid fa-heart"></i>
+                </button>
+              </div>
+              <div class="product-details">
+                <div class="category-label">${p.categoryName}</div>
+                <div class="product-title">${p.title}</div>
+                <div class="product-price">₹${p.price}</div>
+                <div class="card-actions">
+                  <button class="add-cart-btn" onclick="addToCart('${p.id}')">
+                    <i class="fa-solid fa-cart-shopping"></i> Add
+                  </button>
+                  <a href="https://wa.me/919876543210?text=Hello,%20I%20am%20interested%20in%20buying%20Product%20ID:%20${p.id}" target="_blank" class="whatsapp-btn" title="Order on WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                  </a>
                 </div>
-                <div class="p-3 pt-0 flex gap-2">
-                    <button onclick="addToCart('${p.id}')" class="flex-1 bg-amber-800 hover:bg-amber-900 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
-                        <i class="fa-solid fa-cart-plus"></i> Add
-                    </button>
-                    <a href="https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(p.id)}" 
-                       target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs transition flex items-center justify-center" title="Inquire on WhatsApp">
-                        <i class="fa-brands fa-whatsapp text-base"></i>
-                    </a>
-                </div>
+              </div>
             </div>
-        `;
-    }
+          `).join('');
 
-    // Render Views across sections
-    function renderAllViews() {
-        const dhotis = productsData.filter(p => p.category === 'Dhoti');
-        const saaj = productsData.filter(p => p.category === 'Saaj');
-        const sanjab3 = productsData.filter(p => p.category === 'Sanjab' && p.subCategory === '3 Inch');
-        const sanjab5 = productsData.filter(p => p.category === 'Sanjab' && p.subCategory === '5 Inch');
-        
-        // Home Screen - 4 New Arrivals per category
-        document.getElementById('homeDhotiGrid').innerHTML = dhotis.filter(p => p.isNewArrival).slice(0, 4).map(createProductCard).join('');
-        document.getElementById('homeSaajGrid').innerHTML = saaj.filter(p => p.isNewArrival).slice(0, 4).map(createProductCard).join('');
-        
-        const sanjabHomeNew = [...sanjab3.filter(p => p.isNewArrival), ...sanjab5.filter(p => p.isNewArrival)].slice(0, 4);
-        document.getElementById('homeSanjabGrid').innerHTML = sanjabHomeNew.map(createProductCard).join('');
+          sectionEl.innerHTML = `
+            <div class="section-header">
+              <h2 class="section-title">${cat.title} (${catProducts.length})</h2>
+              <a href="javascript:void(0)" class="view-all" onclick="filterCategory('${cat.id}')">View All &rarr;</a>
+            </div>
+            <div class="product-grid">
+              ${cardsHTML}
+            </div>
+          `;
 
-        // Respective Category Sections
-        document.getElementById('dhotiGrid').innerHTML = dhotis.map(createProductCard).join('');
-        document.getElementById('saajGrid').innerHTML = saaj.map(createProductCard).join('');
-        document.getElementById('sanjab3Grid').innerHTML = sanjab3.map(createProductCard).join('');
-        document.getElementById('sanjab5Grid').innerHTML = sanjab5.map(createProductCard).join('');
-
-        // Wishlist Tab
-        const favProducts = productsData.filter(p => wishlist.includes(p.id));
-        const wishlistContainer = document.getElementById('wishlistGrid');
-        if (favProducts.length === 0) {
-            wishlistContainer.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No items saved to your favorites yet. Click the heart icon on any product to save it here!</p>`;
-        } else {
-            wishlistContainer.innerHTML = favProducts.map(createProductCard).join('');
+          wrapper.appendChild(sectionEl);
         }
+      });
     }
 
-    // Live Search Handling
+    // Filter Logic
+    function filterCategory(catId) {
+      document.querySelectorAll('nav .nav-btn').forEach(btn => btn.classList.remove('active'));
+      
+      if (catId === 'all') {
+        renderProducts(allProducts);
+      } else if (catId === 'favorites') {
+        const favProducts = allProducts.filter(p => favorites.has(p.id));
+        renderProducts(favProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.categoryId === catId);
+        renderProducts(filtered);
+      }
+    }
+
+    // Search Logic
     function handleSearch() {
-        const query = document.getElementById('searchInput').value.toLowerCase().trim();
-        const resultsSection = document.getElementById('searchResultsSection');
-        const searchGrid = document.getElementById('searchGrid');
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const clearBtn = document.getElementById('clearSearch');
+      
+      if (query.length > 0) {
+        clearBtn.style.display = 'block';
+      } else {
+        clearBtn.style.display = 'none';
+      }
 
-        if (!query) {
-            resultsSection.classList.add('hidden');
-            return;
-        }
+      const filtered = allProducts.filter(p => 
+        p.title.toLowerCase().includes(query) || 
+        p.id.toLowerCase().includes(query) || 
+        p.categoryName.toLowerCase().includes(query) ||
+        p.tag.toLowerCase().includes(query)
+      );
 
-        const matches = productsData.filter(p => 
-            p.name.toLowerCase().includes(query) || 
-            p.id.toLowerCase().includes(query) || 
-            p.category.toLowerCase().includes(query) ||
-            (p.subCategory && p.subCategory.toLowerCase().includes(query))
-        );
-
-        resultsSection.classList.remove('hidden');
-        searchGrid.innerHTML = matches.length > 0 
-            ? matches.map(createProductCard).join('') 
-            : `<p class="col-span-full text-center text-gray-500 py-6">No products found matching "${query}".</p>`;
+      renderProducts(filtered);
     }
 
-    function clearSearch() {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('searchResultsSection').classList.add('hidden');
+    function resetSearch() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('clearSearch').style.display = 'none';
+      renderProducts(allProducts);
     }
 
-    // Cart Actions
-    function toggleCart() {
-        document.getElementById('cartDrawer').classList.toggle('translate-x-full');
+    // Interactive Actions
+    function addToCart(productId) {
+      cartCount++;
+      document.getElementById('cart-count').innerText = cartCount;
     }
 
-    function addToCart(id) {
-        if (!cart.includes(id)) {
-            cart.push(id);
-        }
-        updateCartUI();
-        toggleCart();
+    function toggleFavorite(productId) {
+      if (favorites.has(productId)) {
+        favorites.delete(productId);
+      } else {
+        favorites.add(productId);
+      }
+      document.getElementById('fav-count').innerText = favorites.size;
+      
+      // Update UI state for matching buttons
+      document.querySelectorAll(`.product-card[data-id="${productId}"] .fav-btn`).forEach(btn => {
+        btn.classList.toggle('active');
+      });
     }
 
-    function removeFromCart(id) {
-        cart = cart.filter(itemId => itemId !== id);
-        updateCartUI();
-    }
-
-    function updateCartUI() {
-        document.getElementById('cartBadge').innerText = cart.length;
-        const container = document.getElementById('cartItems');
-        
-        if (cart.length === 0) {
-            container.innerHTML = `<p class="text-center text-gray-500 py-8">Your cart is empty.</p>`;
-            return;
-        }
-
-        const cartProducts = cart.map(id => productsData.find(p => p.id === id)).filter(Boolean);
-
-        container.innerHTML = cartProducts.map(item => `
-            <div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg border border-amber-100">
-                <div>
-                    <span class="font-mono text-[10px] font-bold text-amber-800 bg-amber-200/60 px-1.5 py-0.5 rounded">${item.id}</span>
-                    <h4 class="font-bold text-xs text-gray-800 mt-1">${item.name}</h4>
-                    <p class="text-[10px] text-gray-500">${item.category} | ${item.price}</p>
-                </div>
-                <button onclick="removeFromCart('${item.id}')" class="text-red-600 hover:text-red-800 text-xs font-bold">Remove</button>
-            </div>
-        `).join('');
-    }
-
-    function checkoutCartWhatsApp() {
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
-        }
-        const draftMsg = "Hello, I want to inquire about these Product IDs: " + cart.join(', ');
-        window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(draftMsg)}`, '_blank');
-    }
-
-    // Initialize Page
-    document.addEventListener('DOMContentLoaded', loadProducts);
-</script>
+    // Initialization
+    window.onload = () => {
+      generateProducts();
+      renderProducts();
+    };
+  </script>
 </body>
 </html>
