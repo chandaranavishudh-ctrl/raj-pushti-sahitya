@@ -114,7 +114,7 @@
       border: 2px solid var(--primary-brown);
     }
 
-    /* Navigation Bar (Fixed Dropdown Clipping Issue) */
+    /* Navigation Bar */
     nav {
       background-color: var(--secondary-brown);
       padding: 10px 5%;
@@ -167,9 +167,19 @@
       top: 100%;
       left: 0;
       overflow: hidden;
-      margin-top: 6px;
+      margin-top: 0;
       border: 1px solid var(--accent-gold);
       animation: fadeIn 0.25s ease-in-out;
+    }
+
+    /* Invisible hover bridge to prevent menu from closing when moving mouse */
+    .dropdown-content::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 0;
+      right: 0;
+      height: 10px;
     }
 
     .dropdown-content a {
@@ -640,7 +650,6 @@
       <i class="fa-solid fa-envelope"></i> Contact Us
     </a>
 
-    <!-- Relocated Search Box beside Contact Us -->
     <div class="nav-search-box">
       <i class="fa-solid fa-magnifying-glass search-icon"></i>
       <input type="text" id="searchInput" placeholder="Search by name, category, or ID..." oninput="handleSearch()">
@@ -750,7 +759,7 @@
         arrivalBanner.innerHTML = `
           <div class="latest-arrivals-title">
             <h2><i class="fa-solid fa-sparkles"></i> Latest Arrivals</h2>
-            <p>Explore our exclusive traditional collections and recent additions</p>
+            <p>Explore our collections and recent additions</p>
           </div>
         `;
         wrapper.appendChild(arrivalBanner);
@@ -883,7 +892,7 @@
       });
 
       if (activeCategory === 'favorites') {
-        const favProducts = allProducts.filter(p => favorites.has(p.id));
+        const favProducts = allProducts.filter(p => favorites.has(productId));
         renderProducts(favProducts, false);
       }
     }
