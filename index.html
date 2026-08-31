@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raj Pushti Sahitya - Catalog</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <header class="bg-amber-700 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h1 class="text-2xl font-bold tracking-wide">Raj Pushti Sahitya</h1>
+                <p class="text-xs text-amber-200">Based in Surat, Gujarat | Contact: +91 90817 15777</p>
+            </div>
+            
+            <div class="w-full md:w-1/3 relative">
+                <input type="text" id="searchInput" placeholder="Search products (e.g., Sanjab, Dhoti)..." 
+                    class="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400">
+                <i class="fa-solid fa-search absolute right-3 top-3 text-gray-400"></i>
+            </div>
+
+            <button onclick="toggleCart()" class="bg-amber-800 hover:bg-amber-900 px-4 py-2 rounded-lg flex items-center gap-2 transition">
+                <i class="fa-solid fa-cart-shopping"></i> Cart (<span id="cartCount">0</span>)
+            </button>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <div class="flex flex-wrap gap-2 mb-8 justify-center" id="categoryContainer">
+            <button onclick="filterCategory('All')" class="cat-btn px-4 py-2 rounded-full bg-amber-700 text-white font-medium text-sm transition">All Products</button>
+        </div>
+
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+    </main>
+
+    <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex flex-col">
+        <div class="p-4 bg-amber-700 text-white flex justify-between items-center">
+            <h2 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i> Your Inquiry Cart</h2>
+            <button onclick="toggleCart()" class="text-white hover:text-gray-200 text-xl font-bold">&times;</button>
+        </div>
+        <div class="p-4 flex-1 overflow-y-auto space-y-4" id="cartItemsContainer">
+            <p class="text-gray-500 text-center mt-10">Your cart is empty.</p>
+        </div>
+        <div class="p-4 border-t bg-gray-50">
+            <button onclick="sendCartToWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Send Inquiry to WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white text-center py-6 mt-12">
+        <p class="text-sm">Raj Pushti Sahitya | Traditional Store Collection</p>
+    </footer>
+
+    <script>
+        // Sample Products Catalog (Your uncle can manage or update this easily)
+        const products = [
+            { id: "RPS-101", name: "Sanjab 3 Inch", category: "Saaj", price: "₹150", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
+            { id: "RPS-102", name: "Sanjab 5 Inch", category: "Saaj", price: "₹250", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
+            { id: "RPS-103", name: "Traditional Pure Cotton Dhoti", category: "Dhoti", price: "₹450", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
+            { id: "RPS-104", name: "Designer Mala", category: "Latest Arrivals", price: "₹300", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=80" }
+        ];
+
+        let cart = [];
+        const WHATSAPP_NUMBER = "919081715777"; // Uncle's phone number
+
+        // Initialize Page
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCategories();
+            renderProducts(products);
+
+            // Live Search Listener
+            document.getElementById("searchInput").addEventListener("input", (e) => {
+                const query = e.target.value.toLowerCase();
+                const filtered = products.filter(p => 
+                    p.name.toLowerCase().includes(query) || 
+                    p.id.toLowerCase().includes(query) || 
+                    p.category.toLowerCase().includes(query)
+                );
+                renderProducts(filtered);
+            });
+        });
+
+        // Render Category Buttons dynamically
+        function renderCategories() {
+            const categories = ["All", ...new Set(products.map(p => p.category))];
+            const container = document.getElementById("categoryContainer");
+            container.innerHTML = categories.map(cat => `
+                <button onclick="filterCategory('${cat}')" class="cat-btn px-4 py-2 rounded-full ${cat === 'All' ? 'bg-amber-700 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'} font-medium text-sm transition">
+                    ${cat}
+                </button>
+            `).join('');
+        }
+
+        // Filter Products by Category
+        function filterCategory(category) {
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.innerText.includes(category)) {
+                    btn.className = "cat-btn px-4 py-2 rounded-full bg-amber-700 text-white font-medium text-sm transition";
+                } else {
+                    btn.className = "cat-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-sm transition";
+                }
+            });
+
+            if (category === 'All') {
+                renderProducts(products);
+            } else {
+                renderProducts(products.filter(p => p.category === category));
+            }
+        }
+
+        // Render Product Cards
+        function renderProducts(items) {
+            const grid = document.getElementById("productGrid");
+            if (items.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No products found.</p>`;
+                return;
+            }
+
+            grid.innerHTML = items.map(p => `
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 flex flex-col justify-between hover:shadow-lg transition">
+                    <div>
+                        <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded font-semibold">${p.category}</span>
+                            <span class="text-xs text-gray-400 float-right font-mono">ID: ${p.id}</span>
+                            <h3 class="font-bold text-lg mt-2 text-gray-800">${p.name}</h3>
+                            <p class="text-amber-700 font-semibold mt-1">${p.price}</p>
+                        </div>
+                    </div>
+                    <div class="p-4 pt-0 flex gap-2">
+                        <button onclick="addToCart('${p.id}')" class="flex-1 bg-amber-700 hover:bg-amber-800 text-white py-2 rounded-lg text-sm font-medium transition">
+                            <i class="fa-solid fa-cart-plus mr-1"></i> Add to Cart
+                        </button>
+                        <a href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi,%20I%20want%20to%20inquire%20about%20Product%20ID:%20${p.id}%20(${p.name})" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm transition" title="Inquire on WhatsApp">
+                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cart Management Actions
+        function toggleCart() {
+            const drawer = document.getElementById("cartDrawer");
+            drawer.classList.toggle("translate-x-full");
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartUI();
+            toggleCart(); // Open cart drawer on add
+        }
+
+        function updateCartUI() {
+            document.getElementById("cartCount").innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            const container = document.getElementById("cartItemsContainer");
+            
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-center mt-10">Your cart is empty.</p>`;
+                return;
+            }
+
+            container.innerHTML = cart.map(item => `
+                flex items-center justify-between border-b pb-3">
+                    <div>
+                        <h4 class="font-semibold text-sm">${item.name}</h4>
+                        <p class="text-xs text-gray-500">ID: ${item.id} | ${item.price} x ${item.qty}</p>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="text-red-500 hover:text-red-700 text-sm font-bold">Remove</button>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
+        }
+
+        function sendCartToWhatsApp() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            let message = "Hello, I want to place an order/inquiry for these items:\n\n";
+            cart.forEach((item, index) => {
+                message += `${index + 1}. *${item.name}* (ID: ${item.id}) - Qty: ${item.qty} - Price: ${item.price}\n`;
+            });
+            message += "\nPlease let me know availability and delivery details.";
+            
+            const encodedUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(encodedUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
