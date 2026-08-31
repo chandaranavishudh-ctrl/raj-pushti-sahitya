@@ -3,156 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Raj Pushti Sahitya - Catalog</title>
+    <title>Raj Pushti Sahitya | Traditional Catalog</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+        }
+        .custom-bg-pattern {
+            background-color: #faf7f2;
+            background-image: radial-gradient(#e5d9c5 0.75px, transparent 0.75px);
+            background-size: 16px 16px;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="custom-bg-pattern text-gray-800 font-sans min-h-screen flex flex-col justify-between">
 
-    <header class="bg-amber-700 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-2xl font-bold tracking-wide">Raj Pushti Sahitya</h1>
-                <p class="text-xs text-amber-200">Based in Surat, Gujarat | Contact: +91 90817 15777</p>
-            </div>
+    <!-- Top Announcement Bar -->
+    <div class="bg-amber-900 text-amber-100 text-xs py-2 px-4 text-center tracking-wide flex justify-between items-center max-w-7xl mx-auto w-full">
+        <span><i class="fa-solid fa-location-dot mr-1"></i> Based in Surat, Gujarat</span>
+        <span><i class="fa-solid fa-phone mr-1"></i> Helpline: +91 90817 15777</span>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-amber-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
             
-            <div class="w-full md:w-1/3 relative">
-                <input type="text" id="searchInput" placeholder="Search products (e.g., Sanjab, Dhoti)..." 
-                    class="w-full px-4 py-2 rounded-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-amber-400">
-                <i class="fa-solid fa-search absolute right-3 top-3 text-gray-400"></i>
+            <!-- Brand Logo / Title -->
+            <div class="cursor-pointer" onclick="switchTab('home')">
+                <h1 class="text-2xl font-bold tracking-wider font-serif">Raj Pushti Sahitya</h1>
+                <p class="text-xs text-amber-200">Authentic Traditional Sahitya & Saaj Collection</p>
             </div>
 
-            <button onclick="toggleCart()" class="bg-amber-800 hover:bg-amber-900 px-4 py-2 rounded-lg flex items-center gap-2 transition">
-                <i class="fa-solid fa-cart-shopping"></i> Cart (<span id="cartCount">0</span>)
-            </button>
+            <!-- Search Box -->
+            <div class="flex-1 max-w-md relative">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search products by name, ID, or category..." 
+                    class="w-full px-4 py-2 pl-10 rounded-full text-gray-900 bg-amber-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-300 text-sm shadow-inner">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-gray-500"></i>
+            </div>
+
+            <!-- Right Controls: Cart -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleCart()" class="bg-amber-950 hover:bg-black text-amber-200 px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold transition shadow-md">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>Cart</span>
+                    <span id="cartBadge" class="bg-amber-500 text-gray-900 rounded-full text-xs font-bold px-2 py-0.5">0</span>
+                </button>
+            </div>
         </div>
+
+        <!-- Navigation Links Bar -->
+        <nav class="bg-amber-900 border-t border-amber-700/50 px-4">
+            <div class="max-w-7xl mx-auto flex gap-1 overflow-x-auto text-sm font-medium">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-btn px-5 py-3 hover:bg-amber-800 text-amber-100 border-b-2 border-transparent">
+                    <i class="fa-solid fa-house mr-1"></i> Home
+                </button>
+                <button onclick="switchTab('categories')" id="nav-categories" class="nav-btn px-5 py-3 hover:bg-amber-800 text-amber-100 border-b-2 border-transparent">
+                    <i class="fa-solid fa-layer-group mr-1"></i> Categories
+                </button>
+                <button onclick="switchTab('latest')" id="nav-latest" class="nav-btn px-5 py-3 hover:bg-amber-800 text-amber-100 border-b-2 border-transparent">
+                    <i class="fa-solid fa-sparkles mr-1"></i> Latest Arrivals
+                </button>
+                <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn px-5 py-3 hover:bg-amber-800 text-amber-100 border-b-2 border-transparent">
+                    <i class="fa-solid fa-address-book mr-1"></i> Contact Us
+                </button>
+            </div>
+        </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        
-        <div class="flex flex-wrap gap-2 mb-8 justify-center" id="categoryContainer">
-            <button onclick="filterCategory('All')" class="cat-btn px-4 py-2 rounded-full bg-amber-700 text-white font-medium text-sm transition">All Products</button>
+    <!-- MAIN CONTENT AREA WITH TAB SWITCHING -->
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full">
+
+        <!-- SEARCH RESULTS OVERLAY (Active when typing) -->
+        <div id="searchResultsSection" class="hidden mb-12">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-amber-900">Search Results</h2>
+                <button onclick="clearSearch()" class="text-xs text-red-600 underline">Clear Search</button>
+            </div>
+            <div id="searchGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
         </div>
 
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- TAB 1: HOME PAGE -->
+        <section id="tab-home" class="tab-content active space-y-10">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-r from-amber-900 via-amber-800 to-amber-900 text-white rounded-2xl p-8 md:p-12 shadow-xl relative overflow-hidden flex flex-col items-start justify-center">
+                <span class="bg-amber-500 text-amber-950 font-bold text-xs uppercase px-3 py-1 rounded-full mb-3">Welcome to Raj Pushti Sahitya</span>
+                <h2 class="text-3xl md:text-5xl font-serif font-bold mb-4">Pushtimarg Sahitya & Saaj Collection</h2>
+                <p class="text-amber-100 max-w-xl mb-6 text-sm md:text-base">Explore high-quality Saaj, Sanjab, Dhotis, and devotional accessories directly from Surat.</p>
+                <button onclick="switchTab('latest')" class="bg-amber-500 hover:bg-amber-400 text-amber-950 font-bold px-6 py-3 rounded-full text-sm shadow-lg transition transform hover:-translate-y-0.5">
+                    VIEW LATEST STOCK <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
             </div>
+
+            <!-- This Week's New Arrivals Section -->
+            <div>
+                <div class="flex justify-between items-end mb-6">
+                    <div>
+                        <span class="text-amber-700 font-bold text-xs uppercase tracking-wider">Fresh In Store</span>
+                        <h2 class="text-2xl font-bold text-amber-950 font-serif">This Week's New Arrivals</h2>
+                    </div>
+                    <button onclick="switchTab('latest')" class="text-amber-700 font-semibold text-sm hover:underline">View All →</button>
+                </div>
+                <div id="weeklyArrivalsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- Category Highlights -->
+            <div>
+                <h2 class="text-2xl font-bold text-amber-950 font-serif mb-6">Featured Collections</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div onclick="filterByCategory('Saaj')" class="bg-white rounded-xl shadow-md p-6 border border-amber-100 hover:border-amber-400 cursor-pointer transition transform hover:-translate-y-1">
+                        <div class="text-amber-700 text-3xl mb-3"><i class="fa-solid fa-om"></i></div>
+                        <h3 class="font-bold text-lg text-amber-950">Saaj & Sanjab</h3>
+                        <p class="text-xs text-gray-500 mt-1">Sanjab 3", 5", and specialized items.</p>
+                    </div>
+                    <div onclick="filterByCategory('Dhoti')" class="bg-white rounded-xl shadow-md p-6 border border-amber-100 hover:border-amber-400 cursor-pointer transition transform hover:-translate-y-1">
+                        <div class="text-amber-700 text-3xl mb-3"><i class="fa-solid fa-shirt"></i></div>
+                        <h3 class="font-bold text-lg text-amber-950">Traditional Dhoti</h3>
+                        <p class="text-xs text-gray-500 mt-1">Pure cotton and designer traditional Dhotis.</p>
+                    </div>
+                    <div onclick="filterByCategory('Poshak')" class="bg-white rounded-xl shadow-md p-6 border border-amber-100 hover:border-amber-400 cursor-pointer transition transform hover:-translate-y-1">
+                        <div class="text-amber-700 text-3xl mb-3"><i class="fa-solid fa-gem"></i></div>
+                        <h3 class="font-bold text-lg text-amber-950">Poshak & Accessories</h3>
+                        <p class="text-xs text-gray-500 mt-1">Exclusive zari and silk collections.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: CATEGORIES PAGE -->
+        <section id="tab-categories" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-amber-950 font-serif">Browse Categories</h2>
+            
+            <!-- Filter Pills -->
+            <div id="categoryPills" class="flex flex-wrap gap-2">
+                <!-- Dynamically generated buttons -->
+            </div>
+
+            <div id="categoryProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Products load here -->
+            </div>
+        </section>
+
+        <!-- TAB 3: LATEST ARRIVALS PAGE -->
+        <section id="tab-latest" class="tab-content space-y-6">
+            <h2 class="text-2xl font-bold text-amber-950 font-serif">All Latest Arrivals</h2>
+            <div id="allLatestGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Products load here -->
+            </div>
+        </section>
+
+        <!-- TAB 4: CONTACT US PAGE -->
+        <section id="tab-contact" class="tab-content space-y-6">
+            <div class="bg-white rounded-2xl p-8 shadow-md border border-amber-100 max-w-2xl mx-auto space-y-6">
+                <h2 class="text-2xl font-bold text-amber-950 font-serif border-b pb-3">Contact Information</h2>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div class="bg-amber-100 text-amber-800 p-3 rounded-full text-lg"><i class="fa-solid fa-store"></i></div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">Raj Pushti Sahitya</h4>
+                            <p class="text-sm text-gray-600">Surat, Gujarat, India</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div class="bg-green-100 text-green-800 p-3 rounded-full text-lg"><i class="fa-brands fa-whatsapp"></i></div>
+                        <div>
+                            <h4 class="font-bold text-gray-800">WhatsApp & Phone Inquiry</h4>
+                            <p class="text-sm text-gray-600">+91 90817 15777</p>
+                            <a href="https://wa.me/919081715777" target="_blank" class="inline-block mt-2 bg-green-600 hover:bg-green-700 text-white text-xs font-bold px-4 py-2 rounded-lg transition">
+                                Chat on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
+    <!-- SHOPPING CART SIDE DRAWER -->
     <div id="cartDrawer" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-2xl transform translate-x-full transition-transform duration-300 z-50 flex flex-col">
-        <div class="p-4 bg-amber-700 text-white flex justify-between items-center">
-            <h2 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i> Your Inquiry Cart</h2>
-            <button onclick="toggleCart()" class="text-white hover:text-gray-200 text-xl font-bold">&times;</button>
+        <div class="p-4 bg-amber-900 text-white flex justify-between items-center">
+            <h3 class="font-bold text-lg"><i class="fa-solid fa-cart-shopping mr-2"></i> Inquiry Cart</h3>
+            <button onclick="toggleCart()" class="text-white hover:text-amber-200 text-xl font-bold">&times;</button>
         </div>
-        <div class="p-4 flex-1 overflow-y-auto space-y-4" id="cartItemsContainer">
-            <p class="text-gray-500 text-center mt-10">Your cart is empty.</p>
+        <div id="cartItems" class="p-4 flex-1 overflow-y-auto space-y-4">
+            <p class="text-center text-gray-500 py-8">Your cart is empty.</p>
         </div>
-        <div class="p-4 border-t bg-gray-50">
-            <button onclick="sendCartToWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 transition">
-                <i class="fa-brands fa-whatsapp text-xl"></i> Send Inquiry to WhatsApp
+        <div class="p-4 border-t bg-amber-50 space-y-3">
+            <button onclick="checkoutCartWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg flex justify-center items-center gap-2 text-sm transition">
+                <i class="fa-brands fa-whatsapp text-lg"></i> Send Order List to WhatsApp
             </button>
         </div>
     </div>
 
-    <footer class="bg-gray-800 text-white text-center py-6 mt-12">
-        <p class="text-sm">Raj Pushti Sahitya | Traditional Store Collection</p>
+    <!-- FOOTER -->
+    <footer class="bg-amber-950 text-amber-200 py-6 text-center text-xs border-t border-amber-900">
+        <p>© Raj Pushti Sahitya | Based in Surat, Gujarat | Contact: +91 90817 15777</p>
     </footer>
 
+    <!-- APPLICATION LOGIC -->
     <script>
-        // Sample Products Catalog (Your uncle can manage or update this easily)
-        const products = [
-            { id: "RPS-101", name: "Sanjab 3 Inch", category: "Saaj", price: "₹150", image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
-            { id: "RPS-102", name: "Sanjab 5 Inch", category: "Saaj", price: "₹250", image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
-            { id: "RPS-103", name: "Traditional Pure Cotton Dhoti", category: "Dhoti", price: "₹450", image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" },
-            { id: "RPS-104", name: "Designer Mala", category: "Latest Arrivals", price: "₹300", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=500&q=80" }
-        ];
-
+        const WHATSAPP_NUM = "919081715777";
+        let productsData = [];
         let cart = [];
-        const WHATSAPP_NUMBER = "919081715777"; // Uncle's phone number
 
-        // Initialize Page
-        document.addEventListener("DOMContentLoaded", () => {
-            renderCategories();
-            renderProducts(products);
-
-            // Live Search Listener
-            document.getElementById("searchInput").addEventListener("input", (e) => {
-                const query = e.target.value.toLowerCase();
-                const filtered = products.filter(p => 
-                    p.name.toLowerCase().includes(query) || 
-                    p.id.toLowerCase().includes(query) || 
-                    p.category.toLowerCase().includes(query)
-                );
-                renderProducts(filtered);
-            });
-        });
-
-        // Render Category Buttons dynamically
-        function renderCategories() {
-            const categories = ["All", ...new Set(products.map(p => p.category))];
-            const container = document.getElementById("categoryContainer");
-            container.innerHTML = categories.map(cat => `
-                <button onclick="filterCategory('${cat}')" class="cat-btn px-4 py-2 rounded-full ${cat === 'All' ? 'bg-amber-700 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'} font-medium text-sm transition">
-                    ${cat}
-                </button>
-            `).join('');
+        // Load Products from JSON
+        async function loadProducts() {
+            try {
+                const res = await fetch('products.json');
+                productsData = await res.json();
+            } catch (err) {
+                console.error("Using fallback products", err);
+                // Fallback default sample data if fetch fails locally
+                productsData = [
+                    { id: "RPS-SAAJ-101", name: "Sanjab 3 Inch", category: "Saaj", price: "₹150", isNewArrival: true, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=500&q=80" },
+                    { id: "RPS-SAAJ-102", name: "Sanjab 5 Inch", category: "Saaj", price: "₹250", isNewArrival: true, image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=500&q=80" },
+                    { id: "RPS-DHOTI-201", name: "Traditional Pure Cotton Dhoti", category: "Dhoti", price: "₹450", isNewArrival: true, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=500&q=80" }
+                ];
+            }
+            renderAllViews();
         }
 
-        // Filter Products by Category
-        function filterCategory(category) {
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                if(btn.innerText.includes(category)) {
-                    btn.className = "cat-btn px-4 py-2 rounded-full bg-amber-700 text-white font-medium text-sm transition";
-                } else {
-                    btn.className = "cat-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 font-medium text-sm transition";
-                }
-            });
+        // Tab Switching Logic with smooth animation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-amber-800', 'border-amber-400'));
+            
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            
+            if (activeTab) activeTab.classList.add('active');
+            if (activeNav) activeNav.classList.add('bg-amber-800', 'border-amber-400');
 
-            if (category === 'All') {
-                renderProducts(products);
-            } else {
-                renderProducts(products.filter(p => p.category === category));
-            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Render Product Cards
-        function renderProducts(items) {
-            const grid = document.getElementById("productGrid");
-            if (items.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-10">No products found.</p>`;
-                return;
-            }
-
-            grid.innerHTML = items.map(p => `
-                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 flex flex-col justify-between hover:shadow-lg transition">
+        // Generate Product Card HTML
+        function createProductCard(p) {
+            return `
+                <div class="bg-white rounded-xl shadow-sm border border-amber-100 overflow-hidden flex flex-col justify-between hover:shadow-md transition transform hover:-translate-y-1">
                     <div>
-                        <img src="${p.image}" alt="${p.name}" class="w-full h-48 object-cover">
+                        <div class="relative">
+                            <img src="${p.image}" alt="${p.name}" class="w-full h-44 object-cover">
+                            ${p.isNewArrival ? `<span class="absolute top-2 left-2 bg-amber-500 text-amber-950 font-bold text-[10px] px-2 py-0.5 rounded shadow">NEW</span>` : ''}
+                            <span class="absolute top-2 right-2 bg-gray-900/80 text-white font-mono text-[10px] px-2 py-0.5 rounded">${p.id}</span>
+                        </div>
                         <div class="p-4">
-                            <span class="text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded font-semibold">${p.category}</span>
-                            <span class="text-xs text-gray-400 float-right font-mono">ID: ${p.id}</span>
-                            <h3 class="font-bold text-lg mt-2 text-gray-800">${p.name}</h3>
-                            <p class="text-amber-700 font-semibold mt-1">${p.price}</p>
+                            <span class="text-xs text-amber-700 font-semibold">${p.category}</span>
+                            <h3 class="font-bold text-gray-800 text-base mt-1 line-clamp-1">${p.name}</h3>
+                            <p class="text-amber-900 font-bold mt-2">${p.price}</p>
                         </div>
                     </div>
                     <div class="p-4 pt-0 flex gap-2">
-                        <button onclick="addToCart('${p.id}')" class="flex-1 bg-amber-700 hover:bg-amber-800 text-white py-2 rounded-lg text-sm font-medium transition">
-                            <i class="fa-solid fa-cart-plus mr-1"></i> Add to Cart
+                        <button onclick="addToCart('${p.id}')" class="flex-1 bg-amber-800 hover:bg-amber-900 text-white text-xs py-2 rounded-lg font-semibold transition flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-cart-plus"></i> Cart
                         </button>
-                        <a href="https://wa.me/${WHATSAPP_NUMBER}?text=Hi,%20I%20want%20to%20inquire%20about%20Product%20ID:%20${p.id}%20(${p.name})" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-sm transition" title="Inquire on WhatsApp">
-                            <i class="fa-brands fa-whatsapp text-lg"></i>
+                        <a href="https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(`Hi, I am interested in inquiring about Product ID: ${p.id} (${p.name})`)}" 
+                           target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded-lg text-xs transition flex items-center justify-center" title="Inquire on WhatsApp">
+                            <i class="fa-brands fa-whatsapp text-base"></i>
                         </a>
                     </div>
                 </div>
-            `).join('');
+            `;
         }
 
-        // Cart Management Actions
+        // Render Views
+        function renderAllViews() {
+            // 1. Weekly Arrivals (Home Page)
+            const weekly = productsData.filter(p => p.isNewArrival);
+            document.getElementById('weeklyArrivalsGrid').innerHTML = weekly.map(createProductCard).join('');
+
+            // 2. Categories
+            renderCategorySection('All');
+
+            // 3. All Latest Arrivals
+            document.getElementById('allLatestGrid').innerHTML = productsData.map(createProductCard).join('');
+        }
+
+        // Category Filter Functionality
+        function renderCategorySection(selectedCategory) {
+            const categories = ['All', ...new Set(productsData.map(p => p.category))];
+            
+            // Render category pills
+            document.getElementById('categoryPills').innerHTML = categories.map(cat => `
+                <button onclick="filterByCategory('${cat}')" 
+                    class="px-4 py-2 rounded-full text-xs font-semibold transition ${cat === selectedCategory ? 'bg-amber-800 text-white shadow' : 'bg-white text-amber-900 border border-amber-200 hover:bg-amber-100'}">
+                    ${cat}
+                </button>
+            `).join('');
+
+            // Filter products
+            const filtered = selectedCategory === 'All' ? productsData : productsData.filter(p => p.category === selectedCategory);
+            document.getElementById('categoryProductsGrid').innerHTML = filtered.map(createProductCard).join('');
+        }
+
+        function filterByCategory(cat) {
+            switchTab('categories');
+            renderCategorySection(cat);
+        }
+
+        // Live Search Handling
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsSection = document.getElementById('searchResultsSection');
+            const searchGrid = document.getElementById('searchGrid');
+
+            if (!query) {
+                resultsSection.classList.add('hidden');
+                return;
+            }
+
+            const matches = productsData.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.id.toLowerCase().includes(query) || 
+                p.category.toLowerCase().includes(query)
+            );
+
+            resultsSection.classList.remove('hidden');
+            searchGrid.innerHTML = matches.length > 0 
+                ? matches.map(createProductCard).join('') 
+                : `<p class="col-span-full text-center text-gray-500 py-6">No products found matching "${query}".</p>`;
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResultsSection').classList.add('hidden');
+        }
+
+        // Cart Actions
         function toggleCart() {
-            const drawer = document.getElementById("cartDrawer");
-            drawer.classList.toggle("translate-x-full");
+            document.getElementById('cartDrawer').classList.toggle('translate-x-full');
         }
 
         function addToCart(id) {
-            const product = products.find(p => p.id === id);
+            const product = productsData.find(p => p.id === id);
             const existing = cart.find(item => item.id === id);
             if (existing) {
                 existing.qty += 1;
@@ -160,27 +356,7 @@
                 cart.push({ ...product, qty: 1 });
             }
             updateCartUI();
-            toggleCart(); // Open cart drawer on add
-        }
-
-        function updateCartUI() {
-            document.getElementById("cartCount").innerText = cart.reduce((sum, item) => sum + item.qty, 0);
-            const container = document.getElementById("cartItemsContainer");
-            
-            if (cart.length === 0) {
-                container.innerHTML = `<p class="text-gray-500 text-center mt-10">Your cart is empty.</p>`;
-                return;
-            }
-
-            container.innerHTML = cart.map(item => `
-                flex items-center justify-between border-b pb-3">
-                    <div>
-                        <h4 class="font-semibold text-sm">${item.name}</h4>
-                        <p class="text-xs text-gray-500">ID: ${item.id} | ${item.price} x ${item.qty}</p>
-                    </div>
-                    <button onclick="removeFromCart('${item.id}')" class="text-red-500 hover:text-red-700 text-sm font-bold">Remove</button>
-                </div>
-            `).join('');
+            toggleCart();
         }
 
         function removeFromCart(id) {
@@ -188,20 +364,42 @@
             updateCartUI();
         }
 
-        function sendCartToWhatsApp() {
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartBadge').innerText = totalItems;
+            
+            const container = document.getElementById('cartItems');
             if (cart.length === 0) {
-                alert("Your cart is empty!");
+                container.innerHTML = `<p class="text-center text-gray-500 py-8">Your cart is empty.</p>`;
                 return;
             }
-            let message = "Hello, I want to place an order/inquiry for these items:\n\n";
-            cart.forEach((item, index) => {
-                message += `${index + 1}. *${item.name}* (ID: ${item.id}) - Qty: ${item.qty} - Price: ${item.price}\n`;
-            });
-            message += "\nPlease let me know availability and delivery details.";
-            
-            const encodedUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-            window.open(encodedUrl, '_blank');
+
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center justify-between bg-amber-50 p-3 rounded-lg border border-amber-100">
+                    <div>
+                        <h4 class="font-bold text-xs text-gray-800">${item.name}</h4>
+                        <p class="text-[10px] text-gray-500">ID: ${item.id} | ${item.price} x ${item.qty}</p>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="text-red-600 hover:text-red-800 text-xs font-bold">Remove</button>
+                </div>
+            `).join('');
         }
+
+        function checkoutCartWhatsApp() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            let text = "Hello Raj Pushti Sahitya, I would like to inquire about ordering:\n\n";
+            cart.forEach((item, idx) => {
+                text += `${idx + 1}. *${item.name}* (ID: ${item.id}) - Qty: ${item.qty} - Price: ${item.price}\n`;
+            });
+            text += "\nPlease confirm stock availability and shipping to my location.";
+            window.open(`https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', loadProducts);
     </script>
 </body>
 </html>
